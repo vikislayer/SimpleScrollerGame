@@ -7,6 +7,7 @@ namespace SimpleScrollerGame
         int backSize;
         int playerSpeed = 3;
         Random rnd;
+        bool movLeft; bool movRight; bool movUp; bool movDown;
 
         PictureBox[] Bullets;
         int BulletSpeed;
@@ -17,6 +18,7 @@ namespace SimpleScrollerGame
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            movLeft = false; movRight = false; movUp = false; movDown = false;
             speedbackground = 6;
             backImages = new PictureBox[20];
             rnd = new Random();
@@ -29,7 +31,7 @@ namespace SimpleScrollerGame
             for (int i = 0; i < Bullets.Length; i++)
             {
                 Bullets[i] = new PictureBox();
-                Bullets[i].Size = new Size(8, 8);
+                Bullets[i].Size = new Size(10, 10);
                 Bullets[i].Image = Bullet;
                 Bullets[i].SizeMode = PictureBoxSizeMode.Zoom;
                 Bullets[i].BorderStyle = BorderStyle.None;
@@ -118,19 +120,39 @@ namespace SimpleScrollerGame
         {
             if (e.KeyCode == Keys.Up)
             {
+                if (movDown == true)
+                {
+                    moveDownTmr.Stop();
+                }
                 moveUpTmr.Start();
+                movUp = true;
             }
             if (e.KeyCode == Keys.Down)
             {
+                if (movUp == true)
+                {
+                    moveUpTmr.Stop();
+                }
                 moveDownTmr.Start();
+                movDown = true;
             }
             if (e.KeyCode == Keys.Left)
             {
+                if (movRight == true)
+                {
+                    moveRightTmr.Stop();
+                }
                 moveLeftTmr.Start();
+                movLeft = true;
             }
             if (e.KeyCode == Keys.Right)
             {
+                if (movLeft == true)
+                {
+                    moveLeftTmr.Stop();
+                }
                 moveRightTmr.Start();
+                movRight = true;
             }
         }
 
@@ -143,18 +165,22 @@ namespace SimpleScrollerGame
             if (e.KeyCode == Keys.Up)
             {
                 moveUpTmr.Stop();
+                movUp = false;
             }
             if (e.KeyCode == Keys.Down)
             {
                 moveDownTmr.Stop();
+                movDown = false;
             }
             if (e.KeyCode == Keys.Left)
             {
                 moveLeftTmr.Stop();
+                movLeft = false;
             }
             if (e.KeyCode == Keys.Right)
             {
                 moveRightTmr.Stop();
+                movRight = false;
             }
         }
 
@@ -170,7 +196,7 @@ namespace SimpleScrollerGame
                 else
                 {
                     Bullets[i].Visible = false;
-                    Bullets[i].Location = new Point(Player.Location.X + 25, Player.Location.Y - 10 * i);
+                    Bullets[i].Location = new Point(Player.Location.X + 20, Player.Location.Y + (20 * i));  // Location from which bullets are fired
                 }
             }
         }

@@ -7,6 +7,9 @@ namespace SimpleScrollerGame
         int backSize;
         int playerSpeed = 3;
         Random rnd;
+
+        PictureBox[] Bullets;
+        int BulletSpeed;
         public Form1()
         {
             InitializeComponent();
@@ -17,6 +20,22 @@ namespace SimpleScrollerGame
             speedbackground = 6;
             backImages = new PictureBox[20];
             rnd = new Random();
+
+            BulletSpeed = 25;
+            Bullets = new PictureBox[3];
+
+            Image Bullet = Image.FromFile(@"assets\Bullet.png");
+
+            for (int i = 0; i < Bullets.Length; i++)
+            {
+                Bullets[i] = new PictureBox();
+                Bullets[i].Size = new Size(8, 8);
+                Bullets[i].Image = Bullet;
+                Bullets[i].SizeMode = PictureBoxSizeMode.Zoom;
+                Bullets[i].BorderStyle = BorderStyle.None;
+                this.Controls.Add(Bullets[i]);
+
+            }
 
             for (int i = 0; i < backImages.Length; i++)
             {
@@ -136,6 +155,23 @@ namespace SimpleScrollerGame
             if (e.KeyCode == Keys.Right)
             {
                 moveRightTmr.Stop();
+            }
+        }
+
+        private void BulletMovement_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Bullets.Length; i++)
+            {
+                if (Bullets[i].Top > 0)
+                {
+                    Bullets[i].Visible = true;
+                    Bullets[i].Top -= BulletSpeed;
+                }
+                else
+                {
+                    Bullets[i].Visible = false;
+                    Bullets[i].Location = new Point(Player.Location.X + 25, Player.Location.Y - 10 * i);
+                }
             }
         }
     }

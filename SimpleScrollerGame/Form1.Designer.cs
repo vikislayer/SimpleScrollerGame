@@ -36,6 +36,7 @@
             moveRightTmr = new System.Windows.Forms.Timer(components);
             moveUpTmr = new System.Windows.Forms.Timer(components);
             moveDownTmr = new System.Windows.Forms.Timer(components);
+            BulletMovement = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             SuspendLayout();
             // 
@@ -76,6 +77,12 @@
             moveDownTmr.Interval = 10;
             moveDownTmr.Tick += moveDownTmr_Tick;
             // 
+            // BulletMovement
+            // 
+            BulletMovement.Enabled = true;
+            BulletMovement.Interval = 20;
+            BulletMovement.Tick += BulletMovement_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -87,6 +94,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximumSize = new Size(600, 500);
             Name = "Form1";
+            RightToLeftLayout = true;
             Text = "Form1";
             Load += Form1_Load;
             KeyDown += Form1_KeyDown;
@@ -103,5 +111,6 @@
         private System.Windows.Forms.Timer moveRightTmr;
         private System.Windows.Forms.Timer moveUpTmr;
         private System.Windows.Forms.Timer moveDownTmr;
+        private System.Windows.Forms.Timer BulletMovement;
     }
 }

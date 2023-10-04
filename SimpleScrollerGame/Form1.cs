@@ -5,7 +5,7 @@ namespace SimpleScrollerGame
         PictureBox[] backImages;
         int speedbackground;
         int backSize;
-        int playerSpeed = 10;
+        int playerSpeed = 3;
         Random rnd;
         public Form1()
         {
@@ -117,10 +117,26 @@ namespace SimpleScrollerGame
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            moveDownTmr.Stop();
-            moveLeftTmr.Stop();
-            moveRightTmr.Stop();
-            moveUpTmr.Stop();
+            //moveDownTmr.Stop();
+            //moveLeftTmr.Stop();
+            //moveRightTmr.Stop();
+            //moveUpTmr.Stop();
+            if (e.KeyCode == Keys.Up)
+            {
+                moveUpTmr.Stop();
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                moveDownTmr.Stop();
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                moveLeftTmr.Stop();
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                moveRightTmr.Stop();
+            }
         }
     }
 }

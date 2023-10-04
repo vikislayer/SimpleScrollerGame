@@ -58,18 +58,22 @@
             // 
             // moveLeftTmr
             // 
+            moveLeftTmr.Interval = 10;
             moveLeftTmr.Tick += moveLeftTmr_Tick;
             // 
             // moveRightTmr
             // 
+            moveRightTmr.Interval = 10;
             moveRightTmr.Tick += moveRightTmr_Tick;
             // 
             // moveUpTmr
             // 
+            moveUpTmr.Interval = 10;
             moveUpTmr.Tick += moveUpTmr_Tick;
             // 
             // moveDownTmr
             // 
+            moveDownTmr.Interval = 10;
             moveDownTmr.Tick += moveDownTmr_Tick;
             // 
             // Form1

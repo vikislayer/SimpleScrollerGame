@@ -100,7 +100,6 @@ namespace SimpleScrollerGame
                 backImages[i].BackColor = Color.White;
                 this.Controls.Add(backImages[i]);
             }
-        }
 
         private void BackMove_Tick(object sender, EventArgs e)
         {

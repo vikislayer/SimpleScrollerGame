@@ -37,6 +37,7 @@
             moveUpTmr = new System.Windows.Forms.Timer(components);
             moveDownTmr = new System.Windows.Forms.Timer(components);
             BulletMovement = new System.Windows.Forms.Timer(components);
+            EnemyMovement = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             SuspendLayout();
             // 
@@ -48,6 +49,7 @@
             // 
             // Player
             // 
+            Player.BackColor = SystemColors.ActiveCaptionText;
             Player.Image = (Image)resources.GetObject("Player.Image");
             Player.Location = new Point(275, 375);
             Player.Name = "Player";
@@ -83,6 +85,12 @@
             BulletMovement.Interval = 20;
             BulletMovement.Tick += BulletMovement_Tick;
             // 
+            // EnemyMovement
+            // 
+            EnemyMovement.Enabled = true;
+            EnemyMovement.Interval = 10;
+            EnemyMovement.Tick += EnemyMovement_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -112,5 +120,6 @@
         private System.Windows.Forms.Timer moveUpTmr;
         private System.Windows.Forms.Timer moveDownTmr;
         private System.Windows.Forms.Timer BulletMovement;
+        private System.Windows.Forms.Timer EnemyMovement;
     }
 }

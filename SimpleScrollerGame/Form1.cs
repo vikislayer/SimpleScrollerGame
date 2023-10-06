@@ -4,8 +4,13 @@ namespace SimpleScrollerGame
     {
         PictureBox[] backImages;
         int speedbackground;
+
+        PictureBox[] enemies;
+        int[] enemyHealth;
+        int enemySpd;
+
         int backSize;
-        int playerSpeed = 3;
+        int playerSpeed;
         Random rnd;
         bool movLeft; bool movRight; bool movUp; bool movDown;
 
@@ -19,6 +24,9 @@ namespace SimpleScrollerGame
         private void Form1_Load(object sender, EventArgs e)
         {
             movLeft = false; movRight = false; movUp = false; movDown = false;
+            enemyHealth = new int[20];
+            enemySpd = 1;
+            playerSpeed = 3;
             speedbackground = 6;
             backImages = new PictureBox[20];
             rnd = new Random();
@@ -26,7 +34,50 @@ namespace SimpleScrollerGame
             BulletSpeed = 25;
             Bullets = new PictureBox[3];
 
-            Image Bullet = Image.FromFile(@"assets\Bullet.png");
+            enemies = new PictureBox[20];
+
+            Image Bullet = Image.FromFile(@"assets\Bullet.png"); // Load Bullet Image
+
+            Image Enem0 = Image.FromFile(@"assets\Enemy_0.png");  // Load Enemy images
+            Image Enem1 = Image.FromFile(@"assets\Enemy_1.png");
+            Image Enem2 = Image.FromFile(@"assets\Enemy_2.png");
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i] = new PictureBox();
+                enemies[i].Size = new Size(35, 35);
+                enemies[i].BorderStyle = BorderStyle.None;
+                enemies[i].SizeMode = PictureBoxSizeMode.Zoom;
+                enemies[i].Visible = false;
+                this.Controls.Add(enemies[i]);
+
+                if (i < 10)
+                {
+                    enemies[i].Location = new Point((1 + i) * 50, -50);
+                } //Spawn Enemies
+                else
+                {
+                    enemies[i].Location = new Point((i - 9) * 50, -100);
+                }
+
+                int enemyType = rnd.Next(1, 10);
+                if (enemyType < 3)
+                {
+                    enemies[i].Image = Enem2;
+                    enemyHealth[i] = 5;
+                }  //Set enemy images
+                else if (enemyType < 6)
+                {
+                    enemies[i].Image = Enem1;
+                    enemyHealth[i] = 2;
+                }
+                else
+                {
+                    enemies[i].Image = Enem0;
+                    enemyHealth[i] = 1;
+                }
+
+            }
 
             for (int i = 0; i < Bullets.Length; i++)
             {
@@ -197,6 +248,26 @@ namespace SimpleScrollerGame
                 {
                     Bullets[i].Visible = false;
                     Bullets[i].Location = new Point(Player.Location.X + 20, Player.Location.Y + (20 * i));  // Location from which bullets are fired
+                }
+            }
+        }
+
+        private void EnemyMovement_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].Visible = true;
+                enemies[i].Top += enemySpd;
+                if (enemies[i].Top > this.Height)
+                {
+                    if (i < 10)
+                    {
+                        enemies[i].Location = new Point((1 + i) * 50, -50);
+                    }
+                    else
+                    {
+                        enemies[i].Location = new Point((i - 9) * 50, -50);
+                    }
                 }
             }
         }

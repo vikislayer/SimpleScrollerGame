@@ -39,6 +39,9 @@
             BulletMovement = new System.Windows.Forms.Timer(components);
             EnemyMovement = new System.Windows.Forms.Timer(components);
             EnemyBulletMovement = new System.Windows.Forms.Timer(components);
+            Replay = new Button();
+            Exit = new Button();
+            GameState = new Label();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             SuspendLayout();
             // 
@@ -98,12 +101,53 @@
             EnemyBulletMovement.Interval = 20;
             EnemyBulletMovement.Tick += EnemyBulletMovement_Tick;
             // 
+            // Replay
+            // 
+            Replay.Location = new Point(200, 196);
+            Replay.MinimumSize = new Size(200, 50);
+            Replay.Name = "Replay";
+            Replay.Size = new Size(200, 50);
+            Replay.TabIndex = 1;
+            Replay.Text = "Replay";
+            Replay.UseVisualStyleBackColor = true;
+            Replay.Visible = false;
+            Replay.Click += Replay_Click;
+            // 
+            // Exit
+            // 
+            Exit.Location = new Point(200, 252);
+            Exit.Name = "Exit";
+            Exit.Size = new Size(200, 50);
+            Exit.TabIndex = 2;
+            Exit.Text = "Exit";
+            Exit.UseVisualStyleBackColor = true;
+            Exit.Visible = false;
+            Exit.Click += Exit_Click;
+            // 
+            // GameState
+            // 
+            GameState.AutoSize = true;
+            GameState.BackColor = SystemColors.ActiveCaptionText;
+            GameState.FlatStyle = FlatStyle.Flat;
+            GameState.Font = new Font("Segoe UI", 22.2F, FontStyle.Regular, GraphicsUnit.Point);
+            GameState.ForeColor = SystemColors.ControlLightLight;
+            GameState.Location = new Point(192, 118);
+            GameState.MinimumSize = new Size(200, 50);
+            GameState.Name = "GameState";
+            GameState.Size = new Size(200, 50);
+            GameState.TabIndex = 3;
+            GameState.Text = "label1";
+            GameState.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(582, 453);
+            Controls.Add(GameState);
+            Controls.Add(Exit);
+            Controls.Add(Replay);
             Controls.Add(Player);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -116,6 +160,7 @@
             KeyUp += Form1_KeyUp;
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -129,5 +174,8 @@
         private System.Windows.Forms.Timer BulletMovement;
         private System.Windows.Forms.Timer EnemyMovement;
         private System.Windows.Forms.Timer EnemyBulletMovement;
+        private Button Replay;
+        private Button Exit;
+        private Label GameState;
     }
 }

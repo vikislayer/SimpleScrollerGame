@@ -13,6 +13,10 @@ namespace SimpleScrollerGame
         int enemyBulletSpeed;
 
         int score;
+        int level;
+        int difficulty;
+        bool pause;
+        bool gameover;
         int backSize;
         int playerSpeed;
         Random rnd;
@@ -29,6 +33,8 @@ namespace SimpleScrollerGame
         {
             movLeft = false; movRight = false; movUp = false; movDown = false; latestUp = false; latestRight = false;
             enemyHealth = new int[20];
+            pause = false;
+            gameover = false;
             score = 0;
             enemySpd = 1;
             enemyBulletSpeed = 4;
@@ -192,39 +198,59 @@ namespace SimpleScrollerGame
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (!pause)
+            {
+                if (e.KeyCode == Keys.Up)
+                {
+                    latestUp = true;
+                    moveUpTmr.Start();
+                    movUp = true;
+                }
+                if (e.KeyCode == Keys.Down)
+                {
+                    latestUp = false;
+                    moveDownTmr.Start();
+                    movDown = true;
+                }
+                if (e.KeyCode == Keys.Left)
+                {
+                    latestRight = false;
+                    moveLeftTmr.Start();
+                    movLeft = true;
+                }
+                if (e.KeyCode == Keys.Right)
+                {
+                    latestRight = true;
+                    moveRightTmr.Start();
+                    movRight = true;
+                }
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                if (!gameover)
+                {
+                    if (pause)
+                    {
+                        SrtTmr();
+                        GameState.Visible = false;
+                        pause = false;
+                    }
+                    else
+                    {
+                        GameState.Location = new Point(this.Width / 2 - 100, 135);
+                        GameState.Text = "PAUSED";
+                        GameState.Visible = true;
+                        EndTmr();
+                        pause = true;
 
-            if (e.KeyCode == Keys.Up)
-            {
-                latestUp = true;
-                moveUpTmr.Start();
-                movUp = true;
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                latestUp = false;
-                moveDownTmr.Start();
-                movDown = true;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                latestRight = false;
-                moveLeftTmr.Start();
-                movLeft = true;
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                latestRight = true;
-                moveRightTmr.Start();
-                movRight = true;
+                    }
+                }
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            //moveDownTmr.Stop();
-            //moveLeftTmr.Stop();
-            //moveRightTmr.Stop();
-            //moveUpTmr.Stop();
+
             if (e.KeyCode == Keys.Up)
             {
                 if (movDown == true)
@@ -261,6 +287,8 @@ namespace SimpleScrollerGame
                 moveRightTmr.Stop();
                 movRight = false;
             }
+
+            
         }
 
         private void BulletMovement_Tick(object sender, EventArgs e)
@@ -317,7 +345,7 @@ namespace SimpleScrollerGame
         private void Collision()
         {
 
-            for (int i = 0; i< enemyBullets.Length; i++)
+            for (int i = 0; i < enemyBullets.Length; i++)
             {
                 if (enemyBullets[i].Bounds.IntersectsWith(Player.Bounds))
                 {
@@ -355,11 +383,19 @@ namespace SimpleScrollerGame
             }
         }
 
-       
+
 
         private void Lose()
         {
             EndTmr();
+            gameover = true;
+            GameState.Location = new Point(this.Width / 2 - 100, 135);
+            GameState.Text = "GAMEOVER";
+            GameState.Visible = true;
+            Replay.Visible = true;
+            Exit.Visible = true;
+
+
         }
 
         private void EndTmr()
@@ -382,17 +418,31 @@ namespace SimpleScrollerGame
         {
             for (int i = 0; i < enemyBullets.Length; i++)
             {
-                if(enemyBullets[i].Top < this.Height)
+                if (enemyBullets[i].Top < this.Height)
                 {
                     enemyBullets[i].Visible = true;
                     enemyBullets[i].Top += enemyBulletSpeed;
-                } else
+                }
+                else
                 {
                     enemyBullets[i].Visible = false;
                     int x = rnd.Next(0, 10);
                     enemyBullets[i].Location = new Point(enemies[x].Location.X + 17, enemies[x].Location.Y - 20);
                 }
             }
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
+        }
+
+        private void Replay_Click(object sender, EventArgs e)
+        {
+            gameover = false;
+            this.Controls.Clear();
+            InitializeComponent();
+            Form1_Load(e, e);
         }
     }
 }

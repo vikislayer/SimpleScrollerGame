@@ -42,6 +42,8 @@
             Replay = new Button();
             Exit = new Button();
             GameState = new Label();
+            Score = new Label();
+            Game_Difficulty = new Label();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             SuspendLayout();
             // 
@@ -139,12 +141,36 @@
             GameState.Text = "label1";
             GameState.Visible = false;
             // 
+            // Score
+            // 
+            Score.AutoSize = true;
+            Score.ForeColor = SystemColors.ControlLightLight;
+            Score.Location = new Point(12, 9);
+            Score.MinimumSize = new Size(75, 20);
+            Score.Name = "Score";
+            Score.Size = new Size(75, 20);
+            Score.TabIndex = 4;
+            Score.Text = "Score : 00";
+            // 
+            // Game_Difficulty
+            // 
+            Game_Difficulty.AutoSize = true;
+            Game_Difficulty.ForeColor = SystemColors.ControlLightLight;
+            Game_Difficulty.Location = new Point(420, 9);
+            Game_Difficulty.MinimumSize = new Size(150, 20);
+            Game_Difficulty.Name = "Game_Difficulty";
+            Game_Difficulty.Size = new Size(150, 20);
+            Game_Difficulty.TabIndex = 5;
+            Game_Difficulty.Text = "Difficulty Level : 00";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(582, 453);
+            Controls.Add(Game_Difficulty);
+            Controls.Add(Score);
             Controls.Add(GameState);
             Controls.Add(Exit);
             Controls.Add(Replay);
@@ -177,5 +203,7 @@
         private Button Replay;
         private Button Exit;
         private Label GameState;
+        private Label Score;
+        private Label Game_Difficulty;
     }
 }

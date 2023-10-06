@@ -35,16 +35,18 @@ namespace SimpleScrollerGame
             enemyHealth = new int[20];
             pause = false;
             gameover = false;
+            level = 0;
             score = 0;
             enemySpd = 1;
+            difficulty = 9;
             enemyBulletSpeed = 4;
             playerSpeed = 3;
             speedbackground = 6;
             backImages = new PictureBox[20];
-            enemyBullets = new PictureBox[10];
+            enemyBullets = new PictureBox[20];
             rnd = new Random();
 
-            BulletSpeed = 12;
+            BulletSpeed = 16;
             Bullets = new PictureBox[3];
 
             enemies = new PictureBox[20];
@@ -100,7 +102,7 @@ namespace SimpleScrollerGame
                 enemyBullets[i].Size = new Size(2, 10);
                 enemyBullets[i].BackColor = Color.Blue;
                 enemyBullets[i].Visible = false;
-                int x = rnd.Next(0, 10);
+                int x = rnd.Next(0, 20);
                 enemyBullets[i].Location = new Point(enemies[x].Location.X, enemies[x].Location.Y - 20);
                 this.Controls.Add(enemyBullets[i]);
             }
@@ -288,7 +290,7 @@ namespace SimpleScrollerGame
                 movRight = false;
             }
 
-            
+
         }
 
         private void BulletMovement_Tick(object sender, EventArgs e)
@@ -352,7 +354,7 @@ namespace SimpleScrollerGame
                     enemyBullets[i].Visible = false;
                     Player.Visible = false;
                     score = score / 2;
-                    Lose();
+                    Lose("GAMEOVER");
                 }
             }
 
@@ -364,6 +366,24 @@ namespace SimpleScrollerGame
                 {
                     enemies[i].Location = new Point(HorzEnemRespawn(i) * 50, -100);
                     score += 1;
+                    Score.Text = (score < 10) ? "Score : 0" + score.ToString() : "Score : " + score.ToString();
+
+                    if (score % 30 == 0)
+                    {
+                        level += 1;
+                        Game_Difficulty.Text = (level < 10) ? "Difficulty Level : 0" + level.ToString() : "Difficulty Level : " + level.ToString();
+                        if (enemySpd <= 10 && enemyBulletSpeed <= 10 && difficulty >= 0)
+                        {
+                            difficulty--;
+                            enemySpd++;
+                            enemyBulletSpeed++;
+                        }
+                        if (level == 10)
+                        {
+                            score = score * 2;
+                            Lose("Good Job");  //On hindsight, not a great name for function, as this is the result where you win
+                        }
+                    }
                 }
 
                 for (int j = 0; j < Bullets.Length; j++)
@@ -378,19 +398,19 @@ namespace SimpleScrollerGame
                 {
                     Player.Visible = false;
                     score = score / 2;
-                    Lose();
+                    Lose("GAMEOVER");
                 }
             }
         }
 
 
 
-        private void Lose()
+        private void Lose(String txt)
         {
             EndTmr();
             gameover = true;
             GameState.Location = new Point(this.Width / 2 - 100, 135);
-            GameState.Text = "GAMEOVER";
+            GameState.Text = txt;
             GameState.Visible = true;
             Replay.Visible = true;
             Exit.Visible = true;
@@ -416,7 +436,7 @@ namespace SimpleScrollerGame
 
         private void EnemyBulletMovement_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < enemyBullets.Length; i++)
+            for (int i = 0; i < (enemyBullets.Length - (difficulty*2)); i++)
             {
                 if (enemyBullets[i].Top < this.Height)
                 {
@@ -426,7 +446,7 @@ namespace SimpleScrollerGame
                 else
                 {
                     enemyBullets[i].Visible = false;
-                    int x = rnd.Next(0, 10);
+                    int x = rnd.Next(0, 20);
                     enemyBullets[i].Location = new Point(enemies[x].Location.X + 17, enemies[x].Location.Y - 20);
                 }
             }

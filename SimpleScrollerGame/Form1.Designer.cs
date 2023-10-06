@@ -51,10 +51,10 @@
             // 
             Player.BackColor = SystemColors.ActiveCaptionText;
             Player.Image = (Image)resources.GetObject("Player.Image");
-            Player.Location = new Point(275, 375);
+            Player.Location = new Point(275, 379);
             Player.Name = "Player";
             Player.Size = new Size(50, 50);
-            Player.SizeMode = PictureBoxSizeMode.StretchImage;
+            Player.SizeMode = PictureBoxSizeMode.Zoom;
             Player.TabIndex = 0;
             Player.TabStop = false;
             Player.Click += pictureBox1_Click;

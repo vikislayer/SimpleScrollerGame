@@ -12,7 +12,7 @@ namespace SimpleScrollerGame
         int backSize;
         int playerSpeed;
         Random rnd;
-        bool movLeft; bool movRight; bool movUp; bool movDown;
+        bool movLeft; bool movRight; bool movUp; bool movDown; bool latestUp; bool latestRight;
 
         PictureBox[] Bullets;
         int BulletSpeed;
@@ -23,7 +23,7 @@ namespace SimpleScrollerGame
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            movLeft = false; movRight = false; movUp = false; movDown = false;
+            movLeft = false; movRight = false; movUp = false; movDown = false; latestUp = false; latestRight = false;
             enemyHealth = new int[20];
             enemySpd = 1;
             playerSpeed = 3;
@@ -88,7 +88,7 @@ namespace SimpleScrollerGame
                 Bullets[i].BorderStyle = BorderStyle.None;
                 this.Controls.Add(Bullets[i]);
 
-            }
+            } // Spawns Bullets
 
             for (int i = 0; i < backImages.Length; i++)
             {
@@ -99,7 +99,8 @@ namespace SimpleScrollerGame
                 backImages[i].Size = new Size(backSize, backSize);
                 backImages[i].BackColor = Color.White;
                 this.Controls.Add(backImages[i]);
-            }
+            } // Spawns stars in background
+        }
 
         private void BackMove_Tick(object sender, EventArgs e)
         {
@@ -127,7 +128,7 @@ namespace SimpleScrollerGame
                     backImages[i].Top = -backImages[i].Height;
                 }
             }
-        }
+        } // Sets Different Movement speeds for stars in Background
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
@@ -136,7 +137,7 @@ namespace SimpleScrollerGame
 
         private void moveLeftTmr_Tick(object sender, EventArgs e)
         {
-            if (Player.Left > 10)
+            if (Player.Left > 10 && latestRight == false && movLeft == true)
             {
                 Player.Left -= playerSpeed;
             }
@@ -144,7 +145,7 @@ namespace SimpleScrollerGame
 
         private void moveUpTmr_Tick(object sender, EventArgs e)
         {
-            if (Player.Top > 10)
+            if (Player.Top > 10 && latestUp == true && movUp == true)
             {
                 Player.Top -= playerSpeed;
             }
@@ -152,15 +153,16 @@ namespace SimpleScrollerGame
 
         private void moveRightTmr_Tick(object sender, EventArgs e)
         {
-            if (Player.Left < 490)
+            if (Player.Left < 490 && latestRight == true && movRight == true)
             {
                 Player.Left += playerSpeed;
             }
+
         }
 
         private void moveDownTmr_Tick(object sender, EventArgs e)
         {
-            if (Player.Top < 400)
+            if (Player.Top < 400 && latestUp == false && movDown == true)
             {
                 Player.Top += playerSpeed;
             }
@@ -168,39 +170,28 @@ namespace SimpleScrollerGame
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+
             if (e.KeyCode == Keys.Up)
             {
-                if (movDown == true)
-                {
-                    moveDownTmr.Stop();
-                }
+                latestUp = true;
                 moveUpTmr.Start();
                 movUp = true;
             }
             if (e.KeyCode == Keys.Down)
             {
-                if (movUp == true)
-                {
-                    moveUpTmr.Stop();
-                }
+                latestUp = false;
                 moveDownTmr.Start();
                 movDown = true;
             }
             if (e.KeyCode == Keys.Left)
             {
-                if (movRight == true)
-                {
-                    moveRightTmr.Stop();
-                }
+                latestRight = false;
                 moveLeftTmr.Start();
                 movLeft = true;
             }
             if (e.KeyCode == Keys.Right)
             {
-                if (movLeft == true)
-                {
-                    moveLeftTmr.Stop();
-                }
+                latestRight = true;
                 moveRightTmr.Start();
                 movRight = true;
             }
@@ -214,21 +205,37 @@ namespace SimpleScrollerGame
             //moveUpTmr.Stop();
             if (e.KeyCode == Keys.Up)
             {
+                if (movDown == true)
+                {
+                    latestUp = false;
+                }
                 moveUpTmr.Stop();
                 movUp = false;
             }
             if (e.KeyCode == Keys.Down)
             {
+                if (movUp == true)
+                {
+                    latestUp = true;
+                }
                 moveDownTmr.Stop();
                 movDown = false;
             }
             if (e.KeyCode == Keys.Left)
             {
+                if (movRight == true)
+                {
+                    latestRight = true;
+                }
                 moveLeftTmr.Stop();
                 movLeft = false;
             }
             if (e.KeyCode == Keys.Right)
             {
+                if (movLeft == true)
+                {
+                    latestRight = false;
+                }
                 moveRightTmr.Stop();
                 movRight = false;
             }

@@ -15,6 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net6.0-windows\assets\Bullet.png" />
+    <Content Include="bin\Debug\net6.0-windows\assets\Enemy_0.png" />
+    <Content Include="bin\Debug\net6.0-windows\assets\Enemy_1.png" />
+    <Content Include="bin\Debug\net6.0-windows\assets\Enemy_2.png" />
+    <Content Include="bin\Debug\net6.0-windows\assets\Icon.ico" />
+    <Content Include="bin\Debug\net6.0-windows\assets\Player.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

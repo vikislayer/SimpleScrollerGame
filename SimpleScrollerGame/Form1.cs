@@ -9,6 +9,10 @@ namespace SimpleScrollerGame
         int[] enemyHealth;
         int enemySpd;
 
+        PictureBox[] enemyBullets;
+        int enemyBulletSpeed;
+
+        int score;
         int backSize;
         int playerSpeed;
         Random rnd;
@@ -25,13 +29,16 @@ namespace SimpleScrollerGame
         {
             movLeft = false; movRight = false; movUp = false; movDown = false; latestUp = false; latestRight = false;
             enemyHealth = new int[20];
+            score = 0;
             enemySpd = 1;
+            enemyBulletSpeed = 4;
             playerSpeed = 3;
             speedbackground = 6;
             backImages = new PictureBox[20];
+            enemyBullets = new PictureBox[10];
             rnd = new Random();
 
-            BulletSpeed = 25;
+            BulletSpeed = 12;
             Bullets = new PictureBox[3];
 
             enemies = new PictureBox[20];
@@ -42,6 +49,7 @@ namespace SimpleScrollerGame
             Image Enem1 = Image.FromFile(@"assets\Enemy_1.png");
             Image Enem2 = Image.FromFile(@"assets\Enemy_2.png");
 
+            //Spawn Enemies
             for (int i = 0; i < enemies.Length; i++)
             {
                 enemies[i] = new PictureBox();
@@ -54,7 +62,7 @@ namespace SimpleScrollerGame
                 if (i < 10)
                 {
                     enemies[i].Location = new Point((1 + i) * 50, -50);
-                } //Spawn Enemies
+                }
                 else
                 {
                     enemies[i].Location = new Point((i - 9) * 50, -100);
@@ -65,7 +73,7 @@ namespace SimpleScrollerGame
                 {
                     enemies[i].Image = Enem2;
                     enemyHealth[i] = 5;
-                }  //Set enemy images
+                }
                 else if (enemyType < 6)
                 {
                     enemies[i].Image = Enem1;
@@ -79,6 +87,19 @@ namespace SimpleScrollerGame
 
             }
 
+            // Spawn enemy Bullets
+            for (int i = 0; i < enemyBullets.Length; i++)
+            {
+                enemyBullets[i] = new PictureBox();
+                enemyBullets[i].Size = new Size(2, 10);
+                enemyBullets[i].BackColor = Color.Blue;
+                enemyBullets[i].Visible = false;
+                int x = rnd.Next(0, 10);
+                enemyBullets[i].Location = new Point(enemies[x].Location.X, enemies[x].Location.Y - 20);
+                this.Controls.Add(enemyBullets[i]);
+            }
+
+            // Spawns Player Bullets
             for (int i = 0; i < Bullets.Length; i++)
             {
                 Bullets[i] = new PictureBox();
@@ -88,8 +109,9 @@ namespace SimpleScrollerGame
                 Bullets[i].BorderStyle = BorderStyle.None;
                 this.Controls.Add(Bullets[i]);
 
-            } // Spawns Bullets
+            }
 
+            // Spawns stars in background
             for (int i = 0; i < backImages.Length; i++)
             {
                 backImages[i] = new PictureBox();
@@ -99,9 +121,9 @@ namespace SimpleScrollerGame
                 backImages[i].Size = new Size(backSize, backSize);
                 backImages[i].BackColor = Color.White;
                 this.Controls.Add(backImages[i]);
-            } // Spawns stars in background
+            }
         }
-
+        // Sets Different Movement speeds for stars in Background
         private void BackMove_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < backImages.Length / 3; i++)
@@ -128,7 +150,7 @@ namespace SimpleScrollerGame
                     backImages[i].Top = -backImages[i].Height;
                 }
             }
-        } // Sets Different Movement speeds for stars in Background
+        }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
@@ -249,6 +271,8 @@ namespace SimpleScrollerGame
                 {
                     Bullets[i].Visible = true;
                     Bullets[i].Top -= BulletSpeed;
+
+                    Collision();
                 }
                 else
                 {
@@ -274,6 +298,99 @@ namespace SimpleScrollerGame
                     {
                         enemies[i].Location = new Point((i - 9) * 50, -50);
                     }
+                }
+            }
+        }
+
+        public static int HorzEnemRespawn(int i)
+        {
+            if (i < 10)
+            {
+                return 1 + 1;
+            }
+            else
+            {
+                return i - 9;
+            }
+        }
+
+        private void Collision()
+        {
+
+            for (int i = 0; i< enemyBullets.Length; i++)
+            {
+                if (enemyBullets[i].Bounds.IntersectsWith(Player.Bounds))
+                {
+                    enemyBullets[i].Visible = false;
+                    Player.Visible = false;
+                    score = score / 2;
+                    Lose();
+                }
+            }
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                if (Bullets[0].Bounds.IntersectsWith(enemies[i].Bounds) ||
+                    Bullets[1].Bounds.IntersectsWith(enemies[i].Bounds) ||
+                    Bullets[2].Bounds.IntersectsWith(enemies[i].Bounds))
+                {
+                    enemies[i].Location = new Point(HorzEnemRespawn(i) * 50, -100);
+                    score += 1;
+                }
+
+                for (int j = 0; j < Bullets.Length; j++)
+                {
+                    if (Bullets[j].Bounds.IntersectsWith(enemies[i].Bounds))
+                    {
+                        Bullets[i].Location = new Point(Player.Location.X + 17, Player.Location.Y + (20 * i));
+                    }
+                }
+
+                if (Player.Bounds.IntersectsWith(enemies[i].Bounds))
+                {
+                    Player.Visible = false;
+                    score = score / 2;
+                    Lose();
+                }
+            }
+        }
+
+       
+
+        private void Lose()
+        {
+            EndTmr();
+        }
+
+        private void EndTmr()
+        {
+            EnemyMovement.Stop();
+            BackMove.Stop();
+            BulletMovement.Stop();
+            EnemyBulletMovement.Stop();
+        }
+
+        private void SrtTmr()
+        {
+            EnemyMovement.Start();
+            BackMove.Start();
+            BulletMovement.Start();
+            EnemyBulletMovement.Start();
+        }
+
+        private void EnemyBulletMovement_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < enemyBullets.Length; i++)
+            {
+                if(enemyBullets[i].Top < this.Height)
+                {
+                    enemyBullets[i].Visible = true;
+                    enemyBullets[i].Top += enemyBulletSpeed;
+                } else
+                {
+                    enemyBullets[i].Visible = false;
+                    int x = rnd.Next(0, 10);
+                    enemyBullets[i].Location = new Point(enemies[x].Location.X + 17, enemies[x].Location.Y - 20);
                 }
             }
         }

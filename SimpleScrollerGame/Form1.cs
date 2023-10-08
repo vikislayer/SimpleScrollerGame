@@ -375,8 +375,12 @@ namespace SimpleScrollerGame
                         if (enemySpd <= 10 && enemyBulletSpeed <= 10 && difficulty >= 0)
                         {
                             difficulty--;
-                            enemySpd++;
                             enemyBulletSpeed++;
+                            if (score % 60 == 0)
+                            {
+                                enemyBulletSpeed--;
+                                enemySpd++;
+                            }
                         }
                         if (level == 10)
                         {
@@ -422,7 +426,7 @@ namespace SimpleScrollerGame
             BulletMovement.Stop();
             EnemyBulletMovement.Stop();
             moveDownTmr.Stop();
-            moveUpTmr.Stop();   
+            moveUpTmr.Stop();
             moveRightTmr.Stop();
             moveLeftTmr.Stop();
         }
@@ -441,7 +445,7 @@ namespace SimpleScrollerGame
 
         private void EnemyBulletMovement_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < (enemyBullets.Length - (difficulty*2)); i++)
+            for (int i = 0; i < (enemyBullets.Length - (difficulty * 2)); i++)
             {
                 if (enemyBullets[i].Top < this.Height)
                 {

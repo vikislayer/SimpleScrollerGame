@@ -94,13 +94,13 @@
             // EnemyMovement
             // 
             EnemyMovement.Enabled = true;
-            EnemyMovement.Interval = 10;
+            EnemyMovement.Interval = 20;
             EnemyMovement.Tick += EnemyMovement_Tick;
             // 
             // EnemyBulletMovement
             // 
             EnemyBulletMovement.Enabled = true;
-            EnemyBulletMovement.Interval = 20;
+            EnemyBulletMovement.Interval = 10;
             EnemyBulletMovement.Tick += EnemyBulletMovement_Tick;
             // 
             // Replay

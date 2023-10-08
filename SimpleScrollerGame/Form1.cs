@@ -39,7 +39,7 @@ namespace SimpleScrollerGame
             score = 0;
             enemySpd = 1;
             difficulty = 9;
-            enemyBulletSpeed = 4;
+            enemyBulletSpeed = 1;
             playerSpeed = 3;
             speedbackground = 6;
             backImages = new PictureBox[20];

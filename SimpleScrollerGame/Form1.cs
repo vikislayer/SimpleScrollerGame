@@ -402,9 +402,6 @@ namespace SimpleScrollerGame
                 }
             }
         }
-
-
-
         private void Lose(String txt)
         {
             EndTmr();
@@ -424,6 +421,10 @@ namespace SimpleScrollerGame
             BackMove.Stop();
             BulletMovement.Stop();
             EnemyBulletMovement.Stop();
+            moveDownTmr.Stop();
+            moveUpTmr.Stop();   
+            moveRightTmr.Stop();
+            moveLeftTmr.Stop();
         }
 
         private void SrtTmr()
@@ -432,6 +433,10 @@ namespace SimpleScrollerGame
             BackMove.Start();
             BulletMovement.Start();
             EnemyBulletMovement.Start();
+            moveDownTmr.Start();
+            moveUpTmr.Start();
+            moveRightTmr.Start();
+            moveLeftTmr.Start();
         }
 
         private void EnemyBulletMovement_Tick(object sender, EventArgs e)
